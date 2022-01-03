@@ -1,0 +1,43 @@
+{
+  "name": "BezierCurve-Plugin",
+  "tree": {
+    "$className": "DataModel",
+
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+
+      "plugin": {
+        "$className": "Folder",
+
+        "plugin": {
+          "$path": "src",
+
+          "dependencies": {
+            "$path": "dependencies"
+          }
+        }
+      }
+    },
+    
+    "Workspace": {
+      "$className": "Workspace",
+      "$properties": {
+        "FilteringEnabled": true
+      }
+    },
+
+    "SoundService": {
+      "$className": "SoundService",
+      "$properties": {
+        "RespectFilteringEnabled": true
+      }
+    },
+
+    "HttpService": {
+      "$className": "HttpService",
+      "$properties": {
+        "HttpEnabled": true
+      }
+    }
+  }
+}
