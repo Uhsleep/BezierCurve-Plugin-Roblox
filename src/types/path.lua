@@ -207,7 +207,6 @@ function Path:addAnchor(anchor)
 end
 
 function Path:removeAnchor(anchorIndex)
-    print("[PATH] removing anchor:", anchorIndex)
     local segments = {
         back = anchorIndex > 1 and self.segments[anchorIndex - 1] or nil,
         front = anchorIndex <= #self.segments and self.segments[anchorIndex] or nil 

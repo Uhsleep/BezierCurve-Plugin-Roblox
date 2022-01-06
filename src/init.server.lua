@@ -104,9 +104,9 @@ if plugin then
     })
 
     local tree = Roact.mount(app, testWidget, "BezierPathPlugin")
-    local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Parent = StarterGui
-    local tree2 = Roact.mount(app, ScreenGui, "BezierPathPlugin2")
+    -- local ScreenGui = Instance.new("ScreenGui")
+    -- ScreenGui.Parent = StarterGui
+    -- local tree2 = Roact.mount(app, ScreenGui, "BezierPathPlugin2")
 
     for _, child in ipairs(testWidget:GetChildren()) do
         print("child:", child)
@@ -121,8 +121,8 @@ if plugin then
         print("PLUGIN UNLOADING")
         PathContext.worldPath:destroy()
         Roact.unmount(tree)
-        Roact.unmount(tree2)
-        ScreenGui:Destroy()
+        -- Roact.unmount(tree2)
+        -- ScreenGui:Destroy()
     end)
 
     plugin.Deactivation:Connect(function()
