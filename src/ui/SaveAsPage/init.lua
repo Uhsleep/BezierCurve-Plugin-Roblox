@@ -130,11 +130,11 @@ function NewPathPage:render()
 end
 
 function NewPathPage:didMount()
-    print("New Path Page mounted")
+    -- print("New Path Page mounted")
 end
 
 function NewPathPage:willUnmount()
-    print("New Path Page unmounting")
+    -- print("New Path Page unmounting")
 end
 
 return NewPathPage

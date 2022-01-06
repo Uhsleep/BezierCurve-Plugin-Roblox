@@ -20,7 +20,7 @@ local Pages = {
 local App = Roact.Component:extend("App")
 
 function App:init()
-    print("Initializing App")
+    -- print("Initializing App")
     self.pages = {
         InitialPage,
         NewPathPage,
@@ -56,11 +56,11 @@ function App:render()
 end
 
 function App:didMount()
-    print("App mounted")
+    -- print("App mounted")
 end
 
 function App:willUnmount()
-    print("App dismounting")
+    -- print("App dismounting")
 end
 
 return App

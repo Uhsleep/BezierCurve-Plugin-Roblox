@@ -142,7 +142,7 @@ function LoadPathPage:render()
     end
 
     local loadButton, deleteButton
-    print(self.state.selectedPath)
+    -- print(self.state.selectedPath)
     if self.state.selectedPath then
         loadButton = e(Button, props.loadButton)
         deleteButton = e(Button, props.deleteButton)
@@ -207,7 +207,7 @@ function LoadPathPage:didMount()
 end
 
 function LoadPathPage:willUnmount()
-    print("Load Path Page unmounting")
+    -- print("Load Path Page unmounting")
 end
 
 return LoadPathPage

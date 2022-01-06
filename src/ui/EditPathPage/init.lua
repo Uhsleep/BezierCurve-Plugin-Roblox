@@ -12,7 +12,7 @@ local Checkbox = require(script:FindFirstAncestor("ui").components.checkbox)
 local EditPathPage = Roact.Component:extend("EditPathPage")
 
 function EditPathPage:init(props)
-    print("Edit Page init - path context name:", props.pathContext.pathName)
+    -- print("Edit Page init - path context name:", props.pathContext.pathName)
 
     self.onSaveButtonClicked = function()
         -- save this path to the plugin settings
@@ -427,7 +427,7 @@ function EditPathPage:render()
 end
 
 function EditPathPage:didMount()
-    print("Edit Path Page mounted")
+    -- print("Edit Path Page mounted")
 
     -- create a transparent ball on the path
     local pathTracker = Instance.new("Part")
@@ -480,7 +480,7 @@ end
 
 function EditPathPage:willUnmount()
     -- do clean up with the world path
-    print("Edit Page unmounting")
+    -- print("Edit Page unmounting")
 
     if self.pathTracker then
         self.pathTracker:Destroy()
