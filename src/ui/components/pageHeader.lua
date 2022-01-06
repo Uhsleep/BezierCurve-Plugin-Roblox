@@ -33,6 +33,12 @@ function PageHeader:render()
         leftButtonContainer = {
             Size = UDim2.new(0.2, 0, 1, 0),
             BackgroundTransparency = 1
+        },
+
+        rightButtonContainer = {
+            Position = UDim2.new(0.6, 0, 0, 0),
+            Size = UDim2.new(0.4, 0, 1, 0),
+            BackgroundTransparency = 1
         }
     }
 
@@ -60,19 +66,41 @@ function PageHeader:render()
         leftButtonContainer = e("Frame", props.leftButtonContainer, children)
     end
 
+    local rightButtonContainer
+    if self.props.rightButtons and #self.props.rightButtons > 0 then
+        local children = {
+            ListLayout = e("UIListLayout", {
+                SortOrder = Enum.SortOrder.LayoutOrder,
+                VerticalAlignment = Enum.VerticalAlignment.Center,
+                HorizontalAlignment = Enum.HorizontalAlignment.Right,
+                FillDirection = Enum.FillDirection.Horizontal,
+            })
+        }
+
+        for i = 1, #self.props.rightButtons do
+            local bc = e("Frame", {
+                Size = UDim2.new(0.25, 0, 1, 0),
+                BackgroundTransparency = 1,
+                LayoutOrder = i
+            }, self.props.rightButtons[i])
+
+            table.insert(children, bc)
+        end
+
+        rightButtonContainer = e("Frame", props.rightButtonContainer, children)
+    end
+
     return e("Frame", props.container, {
         LeftSideButtonContainer = leftButtonContainer,
         PageTitle = e("TextLabel", props.pageTitle),
-        RightSideButtonContainer = nil
+        RightSideButtonContainer = rightButtonContainer
     })
 end
 
 function PageHeader:didMount()
-    print("Edit Path Page mounted")
 end
 
 function PageHeader:willUnmount()
-    print("Initial Page unmounting")
 end
 
 return PageHeader

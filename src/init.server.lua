@@ -2,6 +2,7 @@ local CoreGui = game:GetService("CoreGui")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local Selection = game:GetService("Selection")
+local StarterGui = game:GetService("StarterGui")
 
 local Roact = require(script.dependencies.Roact)
 local App = require(script.ui.App)
@@ -48,6 +49,53 @@ if plugin then
     end)
     
     local PathContext = require(script.pathContext)
+    PathContext:init(plugin)
+
+    ------------------ SAVE TEST ------------------------
+
+    local R = 30
+    local C = R / 2
+    local points = {
+        anchor = {
+            Vector3.new(R, 2, 0),
+            Vector3.new(0, 2, R),
+            Vector3.new(-R, 2, 0),
+            Vector3.new(0, 2, -R),
+            -- Vector3.new(R, 2, 0) -- loop back around with itself (should add support for this internally but w/e)
+        },
+
+        control = {
+            Vector3.new(R, 2, -C),
+            Vector3.new(R, 2, C),
+
+            Vector3.new(C, 2, R),
+            Vector3.new(-C, 2, R),
+
+            Vector3.new(-R, 2, C),
+            Vector3.new(-R, 2, -C),
+
+            Vector3.new(-C, 2, -R),
+            Vector3.new(C, 2, -R),
+
+            -- Vector3.new(R, 2, -C),
+            -- Vector3.new(R, 2, C)
+        }
+    }
+
+
+
+    -- local curve = BezierCurve({
+    --     points.anchor[1],
+    --     points.control[2],
+    --     points.control[3],
+    --     points.anchor[2]
+    -- })
+    local path = Path(points.anchor, points.control)
+    PathContext.Settings:save("circle", path)
+    print("LOADING PATH BACK")
+    local loadedPath  =PathContext.Settings:load("circle")
+    print("loadedPath:", loadedPath)
+    --------------------------------------------------------------------
 
     local app = Roact.createElement(WorldPathContext.Provider, {
             value = { plugin = plugin, pathContext = PathContext, selectedObject = nil }
@@ -56,6 +104,14 @@ if plugin then
     })
 
     local tree = Roact.mount(app, testWidget, "BezierPathPlugin")
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Parent = StarterGui
+    local tree2 = Roact.mount(app, ScreenGui, "BezierPathPlugin2")
+
+    for _, child in ipairs(testWidget:GetChildren()) do
+        print("child:", child)
+    end
+
     button.Click:Connect(function()
         testWidget.Enabled = not testWidget.Enabled
         button:SetActive(testWidget.Enabled)
@@ -64,6 +120,9 @@ if plugin then
     plugin.Unloading:Connect(function()
         print("PLUGIN UNLOADING")
         PathContext.worldPath:destroy()
+        Roact.unmount(tree)
+        Roact.unmount(tree2)
+        ScreenGui:Destroy()
     end)
 
     plugin.Deactivation:Connect(function()
@@ -102,11 +161,18 @@ if plugin then
         --     PathContext.worldPath:setSelectedAnchor(nil)
         -- end
 
+        print("Updating selection tree with index:", index)
         tree = Roact.update(tree, Roact.createElement(WorldPathContext.Provider, {
             value = { plugin = plugin, pathContext = PathContext, selectedAnchorIndex = index }
         }, { 
             A = Roact.createElement(App)
         }))
+
+        -- tree2 = Roact.update(tree2, Roact.createElement(WorldPathContext.Provider, {
+        --     value = { plugin = plugin, pathContext = PathContext, selectedAnchorIndex = index }
+        -- }, { 
+        --     A = Roact.createElement(App)
+        -- }))
     end)
 else
     local R = 30

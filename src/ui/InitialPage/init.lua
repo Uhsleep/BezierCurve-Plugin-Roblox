@@ -80,11 +80,11 @@ function InitialPage:render()
 end
 
 function InitialPage:didMount()
-    print("Initial Page mounted")
+    -- print("Initial Page mounted")
 end
 
 function InitialPage:willUnmount()
-    print("Initial Page unmounting")
+    -- print("Initial Page unmounting")
 end
 
 return InitialPage

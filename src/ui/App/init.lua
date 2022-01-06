@@ -6,13 +6,15 @@ local InitialPage = require(script.Parent.InitialPage)
 local NewPathPage = require(script.Parent.NewPathPage)
 local LoadPathPage = require(script.Parent.LoadPathPage)
 local EditPathPage = require(script.Parent.EditPathPage)
+local SaveAsPage = require(script.Parent.SaveAsPage)
 local WorldPathContext = require(script.Parent.worldPathContext)
 
 local Pages = {
     Initial = 1,
     NewPath = 2,
     LoadPath = 3,
-    EditPath = 4
+    EditPath = 4,
+    SaveAs = 5
 }
 
 local App = Roact.Component:extend("App")
@@ -23,7 +25,8 @@ function App:init()
         InitialPage,
         NewPathPage,
         LoadPathPage,
-        EditPathPage
+        EditPathPage,
+        SaveAsPage
     }
 
     self:setState({

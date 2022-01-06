@@ -11,10 +11,10 @@ function NewPathPage:init()
     self.textBoxReference = Roact.createRef()
 
     self.onPreviousPageClicked = function()
-        self.props.gotoPage(1)
+        self.props.gotoPage(4)
     end
 
-    self.onCreateClicked = function()
+    self.onSaveButtonClicked = function()
         -- create a real default path
         local name = self.textBoxReference:getValue().Text
         name = name:gsub(" ", "")
@@ -23,25 +23,9 @@ function NewPathPage:init()
             name = "Blank"
         end
 
-
         local pathContext = self.props.pathContext
-
-        pathContext:newPath(name, {
-            anchors = {
-                Vector3.new(0, 0, 0),
-                Vector3.new(10, 0, 0)
-            },
-
-            controls = {
-                Vector3.new(-3, 0, 0),
-                Vector3.new(3, 0, 0),
-
-                Vector3.new(7, 0, 0),
-                Vector3.new(13, 0, 0)
-            }
-        })
-
-        pathContext.worldPath:setSelectedAnchor(2)
+        pathContext.pathName = name
+        pathContext:save()
 
         self.props.gotoPage(4)
     end
@@ -67,7 +51,7 @@ function NewPathPage:render()
             TextXAlignment = Enum.TextXAlignment.Center,
             TextYAlignment = Enum.TextYAlignment.Center,
             BorderSizePixel = 0,
-            Text = "Path Name: ",
+            Text = "Save as: ",
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true
         },
@@ -93,7 +77,7 @@ function NewPathPage:render()
     return Roact.createFragment({
         PageHeaderContainer = e("Frame", props.pageHeaderContainer, {
             PageHeader = e(PageHeader, {
-                title = "New Path",
+                title = "Save As",
                 color = Color3.fromRGB(70, 70, 70),
                 leftButtons = {
                     e(Button, {
@@ -135,9 +119,9 @@ function NewPathPage:render()
                 Button = e(Button, {
                     position = UDim2.new(0.5, 0, 0.5, 0),
                     size = UDim2.new(1, 0, 1, 0),
-                    text = "Create Path",
+                    text = "Save Path",
                     color = Color3.fromRGB(58, 216, 95),
-                    onClick = self.onCreateClicked
+                    onClick = self.onSaveButtonClicked
                 }),
             })
 

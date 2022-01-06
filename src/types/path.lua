@@ -37,6 +37,57 @@ function Path:pointAtTime(t)
     return segment:pointAtTime(timeInSegment)
 end
 
+function Path:directionAtTime(t)
+    t = math.clamp(t, 0, 1)
+
+    local numSegments = #self.segments
+    local segmentTimeWidth = 1 / numSegments
+    local segmentIndex = math.ceil(t / segmentTimeWidth)
+    if segmentIndex == 0 then
+        segmentIndex = 1 -- the case when t = 0
+    end
+
+    -- Need to map this path time to the current segment time  
+    local segment = self.segments[segmentIndex]
+    local timeInSegment = (t - (segmentIndex - 1) * segmentTimeWidth) / segmentTimeWidth
+
+    -- print("Time:", t)
+    -- print("Time in segment:", timeInSegment)
+
+    return segment:directionAtTime(timeInSegment)
+end
+
+function Path:directionAtDistance(s)
+    if #self.segments == 0 then
+        return self.anchors[1].position
+    end
+
+    s = math.clamp(s, 0, self:length())
+
+    local segmentIndex = 1
+    local numSegments = #self.segments
+    local accumulatedDistance = 0
+
+    -- print("Number of segments:", numSegments)
+    
+    -- figure out which segment we're in based on the given distance s
+    for i = 1, numSegments do
+        local segment = self.segments[i]
+        
+        if s <= accumulatedDistance + segment:length() then
+            segmentIndex = i
+            break
+        end
+
+        accumulatedDistance = accumulatedDistance + segment:length()
+    end
+
+    local segment = self.segments[segmentIndex]
+    local segmentDistance = s - accumulatedDistance
+
+    return segment:directionAtDistance(segmentDistance)
+end
+
 function Path:pointAtDistance(s)
     if #self.segments == 0 then
         return self.anchors[1].position
@@ -54,7 +105,7 @@ function Path:pointAtDistance(s)
     for i = 1, numSegments do
         local segment = self.segments[i]
         
-        if s < accumulatedDistance + segment:length() then
+        if s <= accumulatedDistance + segment:length() then
             segmentIndex = i
             break
         end
@@ -156,6 +207,7 @@ function Path:addAnchor(anchor)
 end
 
 function Path:removeAnchor(anchorIndex)
+    print("[PATH] removing anchor:", anchorIndex)
     local segments = {
         back = anchorIndex > 1 and self.segments[anchorIndex - 1] or nil,
         front = anchorIndex <= #self.segments and self.segments[anchorIndex] or nil 

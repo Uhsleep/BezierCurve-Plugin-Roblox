@@ -23,6 +23,20 @@ function BezierCurve:pointAtTime(t)
     return a + b + c + d
 end
 
+function BezierCurve:directionAtTime(t)
+    local oneMinusT = 1 - t
+    local a = 3 * oneMinusT * oneMinusT * (self.points[2] - self.points[1])
+    local b = 6 * oneMinusT * t * (self.points[3] - self.points[2])
+    local c = 3 * t * t * (self.points[4] - self.points[3])
+
+    return (a + b + c).Unit
+end
+
+function BezierCurve:directionAtDistance(s)
+    local time = self:_lookUp(s)
+    return self:directionAtTime(time)
+end
+
 function BezierCurve:pointAtDistance(s)
     local time = self:_lookUp(s)
     return self:pointAtTime(time)

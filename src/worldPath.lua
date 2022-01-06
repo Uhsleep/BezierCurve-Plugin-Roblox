@@ -424,6 +424,26 @@ function WorldPath:updateModelNames()
     end
 end
 
+function WorldPath:pointAtDistance(distance)
+    return self.path:pointAtDistance(distance)
+end
+
+function WorldPath:pointAtTime(time)
+    return self.path:pointAtTime(time)
+end
+
+function WorldPath:directionAtTime(time)
+    return self.path:directionAtTime(time)
+end
+
+function WorldPath:directionAtDistance(distance)
+    return self.path:directionAtDistance(distance)
+end
+
+function WorldPath:length()
+    return self.path:length()
+end
+
 function WorldPath:destroy()
     if self.worldPath then
         self.worldPath:Destroy()
